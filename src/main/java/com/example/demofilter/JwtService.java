@@ -19,7 +19,7 @@ import java.util.Date;
 @Service
 @AllArgsConstructor
 public class JwtService {
-    
+
     // Define a fixed secret key (ensure this is stored securely in real applications)
     private static final String SECRET_KEY = "my-fixed-secret-key-which-should-be-very-secure-and-long-enough";
 
@@ -28,13 +28,15 @@ public class JwtService {
         return new SecretKeySpec(decodedKey, 0, decodedKey.length, "HmacSHA256");
     }
 
-    public String createJwt(long userId, String username, Collection<String> rolesName, long minuteTimeOut) {
+    public String createJwt(UserProfile userProfile, long minuteTimeOut) {
         Key key = getKey();
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
-                .claim("I_USER", userId)
-                .claim("U_NAME", username)
-                .claim("U_ROLES", rolesName)
+                .claim("I_USER", userProfile.getId())
+                .claim("F_NAME", userProfile.getFirstName())
+                .claim("L_NAME", userProfile.getLastName())
+                .claim("U_EMAIL", userProfile.getEmail())
+                .claim("U_ROLES", userProfile.getRoles())
                 .claim("TIMESTAMP", new Date())
                 .setIssuer("ABC")
                 .setIssuedAt(new Date())

@@ -21,6 +21,7 @@ public class PublicController {
 
     @GetMapping("/token")
     public String getToken() {
-        return jwtService.createJwt(1, "userFromToken", List.of("user"), 60);
+        UserProfile userProfile = new UserProfile(1L, "menkung@email.test.x", "Menkung", "Iris", List.of("USER"));
+        return jwtService.createJwt(userProfile, 60);
     }
 }
